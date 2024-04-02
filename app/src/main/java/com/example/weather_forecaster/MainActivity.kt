@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             else
             {
                 val key="d1eb562b76c4497588322110242803"
-                var url="https://api.weatherapi.com/v1/forecast.json?"+
+                val url="https://api.weatherapi.com/v1/forecast.json?"+
                         "key=$key"+
                         "&q=$first"+
                         "&days=1&aqi=no&alerts=no"
@@ -51,7 +52,21 @@ class MainActivity : AppCompatActivity() {
                 req.add(request)
             }
         }
-
+        fun parsing(otv:String)
+        {
+            val otvet = JSONObject(otv)
+            val item=Forecast(
+                otvet.getJSONObject("location").getString("name"),
+                otvet.getJSONObject("current").getString("last update"),
+                otvet.getJSONObject("current").getString("temp_c"),
+                otvet.getJSONObject("current").getJSONObject("condition").getString("text"),
+                otvet.getJSONObject("wind_kph").toString(),
+                otvet.getJSONObject("wind_dir").toString(),
+                "",
+                ""
+            )
         }
+
     }
+
 }
